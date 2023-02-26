@@ -12,7 +12,8 @@ export default class Canvas{
   ctx:CanvasRenderingContext2D;
   center:Vector2;
   size:canvasSize;
-  cameraPosition:Vector2
+  cameraPosition:Vector2;
+  camearaViewScale:Vector2;
 
   constructor(parentElement:HTMLElement){
     //create canvas
@@ -25,6 +26,8 @@ export default class Canvas{
     // vars
     this.center = new Vector2(0,0)
     this.cameraPosition = new Vector2(0,0);
+    const zoomOut = 2
+    this.camearaViewScale = new Vector2(1/zoomOut, 1/zoomOut);
      
     // on resize
     this.size = {x: 0, y: 0}
@@ -62,7 +65,8 @@ export default class Canvas{
     this.ctx.translate(
       this.center.x - this.cameraPosition.x,
       this.center.y - this.cameraPosition.y,
-    ); // move to center
+    ); 
+    this.ctx.scale(this.camearaViewScale.x, this.camearaViewScale.y)
 
     // draw all objects
     Object.keys(objects).forEach((key)=>{

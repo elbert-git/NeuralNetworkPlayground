@@ -20,4 +20,11 @@ export default class Vector2{
       (this.x * Math.sin(deg2Rad(angle)))+(this.y*Math.cos(deg2Rad(angle))),
     )
   }
+
+  scale(scalar:number){
+    return new Vector2(
+      this.x*scalar,
+      this.y*scalar,
+    )
+  }
 }

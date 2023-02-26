@@ -1,10 +1,11 @@
+import Car, { HumanCar } from "./car/car";
 import Polygon from "./dataStructs/polygon";
 import Vector2 from "./dataStructs/vector2";
 import PhysicsObjects from "./physicsObject";
 import { physicsObjectList } from "./physicsWorld";
 
-// create road
-const roadWidth = 300;
+// * ------------------- create road
+const roadWidth = 400;
 const roadHeight = -100000;
 const road = new PhysicsObjects(new Polygon([
   new Vector2(-roadWidth, 0),
@@ -14,8 +15,8 @@ const road = new PhysicsObjects(new Polygon([
 ]))
 road.style.fillStyle = "#a6a6a6"
 
-// handle sidelines and lanes
-const laneCount = 3
+// * ------------------- handle sidelines and lanes
+const laneCount = 5
 const laneThickness = 5
 const allLanesWidth = roadWidth - 15;
 // create sideLines
@@ -55,11 +56,22 @@ for (let index = 1; index < laneCount; index++) {
   allLaneObjects[`lane${index}`] = lane;
 }
 
+// *  ------------------- create traffic
+const carSize = [60, 90];
+const car = new HumanCar(new Polygon([
+  new Vector2(-carSize[0], -carSize[1]),
+  new Vector2(carSize[0], -carSize[1]),
+  new Vector2(carSize[0], carSize[1]),
+  new Vector2(-carSize[0], carSize[1])
+]))
 
 
+
+// *  ------------------- push final object to physic world
 export const createdObjects:physicsObjectList = {
   road, 
   leftSideLine, 
   rightSideLine, 
   ... allLaneObjects, 
+  car
 }

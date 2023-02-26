@@ -7,17 +7,19 @@ export default class PhysicsObjects{
   rotation:number;
   polygon:Polygon;
   style:ObjectStyle
+  children:Array<PhysicsObjects>
 
   constructor(polygon:Polygon){
     this.position = new Vector2(0,0);
     this.rotation = 0;
     this.polygon = polygon
     this.style = new ObjectStyle();
+    this.children = []
   }
 
   draw(ctx:CanvasRenderingContext2D){
     // update objects
-    this.#update();
+    this.update();
 
     // styles
     this.#styleCtx(ctx);
@@ -69,6 +71,10 @@ export default class PhysicsObjects{
     return transformedVertices
   }
    
-  #update(){}
+  update(){
+    this.children.forEach((obj)=>{
+      obj.position = this.position
+    })
+  }
 }
  
