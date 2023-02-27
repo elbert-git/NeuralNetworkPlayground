@@ -3,6 +3,7 @@ import PhysicsObjects from "../physicsObject";
 import { lerp } from "../../utilities";
 import { CarControls, CarHumanControl } from "./carControls";
 import Vector2 from "../dataStructs/vector2";
+import Sensors from "./sensors";
 
 export default class Car extends PhysicsObjects{
   controls:CarControls;
@@ -19,7 +20,8 @@ export default class Car extends PhysicsObjects{
     this.rotation = 0;
     this.carSpeed = 20;
 
-    // 
+    // !! try sensor
+    this.children.push(new Sensors( new Polygon([]), 4, 90, 300))
   }
   update(){
     this.processControls();
@@ -35,7 +37,7 @@ export default class Car extends PhysicsObjects{
     }
      
     // process turn
-    if(this.pedal > 0){
+    if(this.pedal !== 0){
       if(this.controls.signalsOut.left){
         this.rotation -= this.turnSpeed * this.pedal
       }else if(this.controls.signalsOut.right){

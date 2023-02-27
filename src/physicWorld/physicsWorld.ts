@@ -11,7 +11,7 @@ export default class PhysicsWorld{
 
  constructor(){
   this.objects = {}
-  this.canvas = new Canvas(document.body)
+  this.canvas = new Canvas(document.getElementById('road')!)
  }
 
  update(){

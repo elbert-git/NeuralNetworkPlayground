@@ -49,6 +49,14 @@ export default class PhysicsObjects{
       ctx.closePath();
       ctx.stroke()
     }
+
+    // handle children
+    this.children.forEach((obj)=>{
+      obj.position = this.position
+      obj.rotation = this.rotation
+      obj.draw(ctx);
+    })
+
   }
    
   #styleCtx(ctx:CanvasRenderingContext2D){
@@ -72,9 +80,6 @@ export default class PhysicsObjects{
   }
    
   update(){
-    this.children.forEach((obj)=>{
-      obj.position = this.position
-    })
   }
 }
  

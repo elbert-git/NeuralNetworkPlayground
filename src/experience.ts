@@ -14,7 +14,8 @@ export default class Experience{
     }
 
     // start updatee loop
-    window.setInterval(this.update.bind(this), 1000/this.updateRate )
+    // window.setInterval(this.update.bind(this), 1000/this.updateRate )
+    this.update()
 
   }
    
@@ -22,5 +23,7 @@ export default class Experience{
     this.processes.forEach((process)=>{
       process.update();
     })
+
+    requestAnimationFrame(this.update.bind(this));
   }
 }
