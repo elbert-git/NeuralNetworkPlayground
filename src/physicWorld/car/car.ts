@@ -21,7 +21,7 @@ export default class Car extends PhysicsObjects{
     this.carSpeed = 20;
 
     // !! try sensor
-    this.children.push(new Sensors( new Polygon([]), 4, 90, 300))
+    this.children.push(new Sensors( new Polygon([]), 9, 180, 500))
   }
   update(){
     this.processControls();

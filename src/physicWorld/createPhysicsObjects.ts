@@ -1,4 +1,4 @@
-import Car, { HumanCar } from "./car/car";
+import { HumanCar } from "./car/car";
 import Polygon from "./dataStructs/polygon";
 import Vector2 from "./dataStructs/vector2";
 import PhysicsObjects from "./physicsObject";
@@ -24,10 +24,12 @@ const leftSideLine = new PhysicsObjects(new Polygon([
   new Vector2(-allLanesWidth, 0),
   new Vector2(-allLanesWidth, roadHeight),
 ]))
+leftSideLine.physicsData.colliderTag = "road";
 const rightSideLine = new PhysicsObjects(new Polygon([
   new Vector2(+allLanesWidth, 0),
   new Vector2(+allLanesWidth, roadHeight),
 ]))
+rightSideLine.physicsData.colliderTag = "road";
 leftSideLine.style.fill = false;
 leftSideLine.style.stroke = true;
 leftSideLine.style.strokeStyle = "white"
@@ -64,6 +66,8 @@ const car = new HumanCar(new Polygon([
   new Vector2(carSize[0], carSize[1]),
   new Vector2(-carSize[0], carSize[1])
 ]))
+car.physicsData.enabled = true;
+car.physicsData.collidesWith = ['road']
 
 
 

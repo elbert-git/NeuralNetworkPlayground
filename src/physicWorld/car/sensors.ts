@@ -1,4 +1,3 @@
-import { lerp } from "../../utilities";
 import Polygon from "../dataStructs/polygon";
 import Vector2 from "../dataStructs/vector2";
 import PhysicsObjects from "../physicsObject";
@@ -14,9 +13,9 @@ export default class Sensors extends PhysicsObjects{
     super(polygon)
     
     // create rays
-    for (let index = 1; index < num+1; index++) {
+    for (let index = 0; index < num+0; index++) {
       // get angle
-      const rayAngle = (0 - angle/2) + ((angle/num)*index)
+      const rayAngle = (0 - angle/2) + ((angle/(num-1))*index+1)
       // get vector
       //create
       const newRay = new SensorRay(new Polygon([

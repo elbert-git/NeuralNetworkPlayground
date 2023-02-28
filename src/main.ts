@@ -11,5 +11,7 @@ const physicWorld = new PhysicsWorld()
 experience.processes.push(physicWorld);
 
 // create create road objects
-physicWorld.objects = {...physicWorld.objects, ...createdObjects}
+Object.keys(createdObjects).forEach((key)=>{
+  physicWorld.addObject(key, createdObjects[key])
+})
 
