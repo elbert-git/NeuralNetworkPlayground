@@ -3,6 +3,7 @@ import Polygon from "./dataStructs/polygon";
 import Vector2 from "./dataStructs/vector2";
 import PhysicsObjects from "./physicsObject";
 import { physicsObjectList } from "./physicsWorld";
+import carOutlines from "/assets/carOutlines.svg";
 
 // * ------------------- create road
 const roadWidth = 400;
@@ -68,6 +69,10 @@ const car = new HumanCar(new Polygon([
 ]))
 car.physicsData.enabled = true;
 car.physicsData.collidesWith = ['road']
+car.style.stroke = true;
+car.style.fill = false;
+car.style.addImage(carOutlines, carSize[0]*2, carSize[1]*2);
+console.log(car);
 
 
 

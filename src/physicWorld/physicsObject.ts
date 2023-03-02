@@ -66,11 +66,14 @@ export default class PhysicsObjects{
     // draw
     if(this.style.fill){
       ctx.closePath();
-      ctx.fill()
+      ctx.fill();
     }
     if(this.style.stroke){
       ctx.closePath();
-      ctx.stroke()
+      ctx.stroke();
+    }
+    if(this.style.image){
+      ctx.drawImage(this.style.image, transformedVertices[0].x, transformedVertices[0].y, this.style.imageSize.x, this.style.imageSize.y);
     }
 
     // handle children
@@ -120,6 +123,8 @@ export default class PhysicsObjects{
       if(this.checkCollisionWith(collidersToCollideWith[index])){
         console.log('collision detected')
         break; 
+      }
+      else{
       }
     }
   }
