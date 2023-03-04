@@ -4,6 +4,7 @@ import Vector2 from "./dataStructs/vector2";
 import PhysicsObjects from "./physicsObject";
 import { physicsObjectList } from "./physicsWorld";
 import carOutlines from "/assets/carOutlines.svg";
+import carFill from "/assets/carFill.svg";
 
 // * ------------------- create road
 const roadWidth = 400;
@@ -60,7 +61,7 @@ for (let index = 1; index < laneCount; index++) {
 }
 
 // *  ------------------- create traffic
-const carSize = [60, 90];
+const carSize = [55, 110];
 const car = new HumanCar(new Polygon([
   new Vector2(-carSize[0], -carSize[1]),
   new Vector2(carSize[0], -carSize[1]),
@@ -69,11 +70,11 @@ const car = new HumanCar(new Polygon([
 ]))
 car.physicsData.enabled = true;
 car.physicsData.collidesWith = ['road']
-car.style.stroke = true;
+car.style.stroke = false;
 car.style.fill = false;
+car.style.fillStyle = "red"
+car.style.addImage(carFill, carSize[0]*2, carSize[1]*2);
 car.style.addImage(carOutlines, carSize[0]*2, carSize[1]*2);
-console.log(car);
-
 
 
 // *  ------------------- push final object to physic world

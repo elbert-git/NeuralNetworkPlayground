@@ -3,6 +3,7 @@ import Vector2 from "./dataStructs/vector2";
 import Polygon from "./dataStructs/polygon";
 import Experience from "../experience";
 import Edge from "./dataStructs/edge";
+import { deg2Rad } from "../utilities";
 
 interface PhysicsData {
   enabled:boolean,
@@ -44,8 +45,13 @@ export default class PhysicsObjects{
       this.handlePhysics();
     }
 
-    // styles
-    this.#styleCtx(ctx);
+    // handle children
+    this.children.forEach((obj)=>{
+      obj.parentPosition = this.position.add(this.parentPosition);
+      obj.parentAngle = this.rotation + this.parentAngle
+      obj.draw(ctx);
+    })
+
 
     //trace vertices
     const transformedVertices = this.computeTransformedVertices()
@@ -59,30 +65,40 @@ export default class PhysicsObjects{
       }
     })
 
+
+     
+    // styles
+    this.#styleCtx(ctx);
+
+    // draw
     if(this.style.closePath){
       ctx.closePath();
     }
-     
-    // draw
     if(this.style.fill){
-      ctx.closePath();
       ctx.fill();
     }
     if(this.style.stroke){
-      ctx.closePath();
       ctx.stroke();
     }
-    if(this.style.image){
-      ctx.drawImage(this.style.image, transformedVertices[0].x, transformedVertices[0].y, this.style.imageSize.x, this.style.imageSize.y);
+    if(this.style.images.length > 0){
+      // handle image rotation
+      const angle = this.rotation;
+      const angleToRotateCtx = deg2Rad(angle)
+      ctx.rotate(angleToRotateCtx)
+
+      // handle image position
+      const relativePos = transformedVertices[0].subtract(this.position);
+      const rotatedRelativePos = relativePos.rotate(0);
+      const finalPos = rotatedRelativePos.add(this.position).rotate(-angle);
+
+      //draw image
+      for (let index = 0; index < this.style.images.length; index++) {
+        ctx.drawImage(this.style.images[index], finalPos.x, finalPos.y, this.style.imageSize.x, this.style.imageSize.y);
+      }
+       
+      // restore contextk
+      ctx.rotate(-angleToRotateCtx)
     }
-
-    // handle children
-    this.children.forEach((obj)=>{
-      obj.parentPosition = this.position.add(this.parentPosition);
-      obj.parentAngle = this.rotation + this.parentAngle
-      obj.draw(ctx);
-    })
-
   }
    
   #styleCtx(ctx:CanvasRenderingContext2D){
@@ -90,6 +106,7 @@ export default class PhysicsObjects{
     ctx.strokeStyle = this.style.strokeStyle
     ctx.lineWidth = this.style.lineWidth;
     ctx.setLineDash(this.style.lineDash);
+    ctx.globalAlpha = this.style.opacity;
   }
 
   computeTransformedVertices(){
@@ -122,9 +139,9 @@ export default class PhysicsObjects{
     for (let index = 0; index < collidersToCollideWith.length; index++) {
       if(this.checkCollisionWith(collidersToCollideWith[index])){
         console.log('collision detected')
+        const collision = this.checkCollisionWith(collidersToCollideWith[index])
+        this.onCollision(collision);
         break; 
-      }
-      else{
       }
     }
   }
@@ -144,12 +161,12 @@ export default class PhysicsObjects{
         const thisEdge = thisEdges[thisEdgeIndex];
         const otherEdge = otherEdges[otherEdgeIndex]
         const collision = thisEdge.getIntersectionWith(otherEdge)
-        return collision
+        if(collision){return collision}
       }
     }
     return null // just to satify typsecript squiggly lines
   }
 
-  onCollision(){}
+  onCollision(collision:Vector2|null){}
 }
  

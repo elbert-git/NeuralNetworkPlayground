@@ -10,6 +10,7 @@ export default class Car extends PhysicsObjects{
   pedal:number;
   turnSpeed:number;
   carSpeed:number;
+  status:string;
   constructor(polygon:Polygon){
     super(polygon);
     this.controls = new CarControls();
@@ -20,11 +21,16 @@ export default class Car extends PhysicsObjects{
     this.rotation = 0;
     this.carSpeed = 20;
 
+    // car status
+    this.status = 'enabled'
+
     // !! try sensor
     this.children.push(new Sensors( new Polygon([]), 9, 180, 500))
   }
   update(){
-    this.processControls();
+    if(this.status === 'enabled'){
+      this.processControls();
+    }
   }
   processControls(){
     //process pedal
@@ -61,5 +67,16 @@ export class HumanCar extends Car{
   constructor(polygon:Polygon){
     super(polygon)
     this.controls = new CarHumanControl();
+  }
+
+  // on collision disable controls and physics and fade it
+  onCollision(): void {
+    this.status = 'crashed'
+    this.physicsData.enabled = false;
+    this.style.opacity = 0.5
+    // disable sensors too
+    this.children[0].children.forEach((child)=>{
+      child.physicsData.enabled = false
+    })
   }
 }

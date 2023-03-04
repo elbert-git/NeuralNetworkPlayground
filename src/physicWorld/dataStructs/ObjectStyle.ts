@@ -8,8 +8,9 @@ export default class ObjectStyle{
   closePath:boolean;
   lineWidth:number
   lineDash:Array<number>
-  image:HTMLImageElement|null; 
+  images:Array<HTMLImageElement>; 
   imageSize:Vector2;
+  opacity:number;
   constructor(){
     this.stroke = false;
     this.fill = true;
@@ -18,8 +19,9 @@ export default class ObjectStyle{
     this.lineDash = []
     this.closePath = true;
     this.lineWidth = 1;
-    this.image = null
+    this.images = [];
     this.imageSize = new Vector2(0,0);
+    this.opacity = 1;
   }
   addImage(path:string, width:number, height:number){
     //create img element
@@ -27,7 +29,7 @@ export default class ObjectStyle{
     image.src = path;
     // assign to object
     image.onload = ()=>{
-      this.image = image;
+      this.images.push(image);
       this.imageSize = new Vector2(width, height)
     }
   }

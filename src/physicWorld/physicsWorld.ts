@@ -38,8 +38,8 @@ export default class PhysicsWorld{
   // add to collider groups
   const tag = physicsObject.physicsData.colliderTag;
   if(tag){
-    if(this.colliderGroups.tag){
-      this.colliderGroups.tag.push(physicsObject);
+    if(this.colliderGroups[tag]){
+      this.colliderGroups[tag].push(physicsObject);
     }else{
       this.colliderGroups[tag] = [physicsObject];
     }

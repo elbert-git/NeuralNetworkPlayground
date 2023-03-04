@@ -30,12 +30,21 @@ export default class Edge{
     }
   }
 
-  static getEdges(verts:Array<Vector2>){
+  static getEdges(verts:Array<Vector2>, cyclic:boolean=true){
     const edges:Array<Edge> = []
     for (let index = 0; index < verts.length - 1; index++) {
       const edge = new Edge(verts[index], verts[index+1]);
       edges.push(edge);
     }
+
+    // return edge of last vertex to first vertex
+    if(cyclic){
+      edges.push(new Edge(
+        verts[verts.length-1],
+        verts[0]
+      ))
+    }
+
     return edges;
   }
 }

@@ -13,6 +13,13 @@ export default class Vector2{
       this.y + vec.y,
     )
   }
+
+  subtract(vec:Vector2){
+    return new Vector2(
+      this.x - vec.x,
+      this.y - vec.y,
+    )
+  }
   
   rotate(angle:number){
     return new Vector2(
@@ -26,5 +33,9 @@ export default class Vector2{
       this.x*scalar,
       this.y*scalar,
     )
+  }
+   
+  magnitude(){
+    return Math.sqrt(this.x+this.y)
   }
 }
