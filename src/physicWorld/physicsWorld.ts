@@ -25,7 +25,7 @@ export default class PhysicsWorld{
   this.canvas.draw(this.objects);
  }
 
- //todo remmever to recusively add children
+ // remember to recusively add children
  addObject(key:string ,physicsObject:PhysicsObjects){
   // add to list.
   this.objects[key] = physicsObject

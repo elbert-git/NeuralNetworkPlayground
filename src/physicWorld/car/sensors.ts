@@ -54,7 +54,7 @@ export default class Sensors extends PhysicsObjects{
       newRay.style.stroke = true;
       newRay.style.fill = false;
       newRay.physicsData.enabled = true;
-      newRay.physicsData.collidesWith = ['road'];
+      newRay.physicsData.collidesWith = ['road', 'traffic'];
       //push ray
       this.children.push(newRay)
     }

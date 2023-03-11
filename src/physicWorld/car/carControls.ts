@@ -57,3 +57,10 @@ export class CarHumanControl extends CarControls{
   }
   update(){}
 }
+
+export class CarTrafficControl extends CarControls{
+  constructor(){
+    super()
+    this.signalsOut.up = 1
+  }
+}

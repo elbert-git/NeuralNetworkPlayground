@@ -1,7 +1,7 @@
 import Polygon from "../dataStructs/polygon";
 import PhysicsObjects from "../physicsObject";
 import { lerp } from "../../utilities";
-import { CarControls, CarHumanControl } from "./carControls";
+import { CarControls, CarHumanControl, CarTrafficControl } from "./carControls";
 import Vector2 from "../dataStructs/vector2";
 import Sensors from "./sensors";
 
@@ -24,8 +24,6 @@ export default class Car extends PhysicsObjects{
     // car status
     this.status = 'enabled'
 
-    // !! try sensor
-    this.children.push(new Sensors( new Polygon([]), 9, 180, 500))
   }
   update(){
     if(this.status === 'enabled'){
@@ -67,6 +65,8 @@ export class HumanCar extends Car{
   constructor(polygon:Polygon){
     super(polygon)
     this.controls = new CarHumanControl();
+    // create sensor for driving car
+    this.children.push(new Sensors( new Polygon([]), 9, 180, 500))
   }
 
   // on collision disable controls and physics and fade it
@@ -78,5 +78,13 @@ export class HumanCar extends Car{
     this.children[0].children.forEach((child)=>{
       child.physicsData.enabled = false
     })
+  }
+}
+
+export class TrafficCar extends Car{
+  constructor(polygon:Polygon){
+    super(polygon);
+    this.controls = new CarTrafficControl();
+    this.status = 'enabled'
   }
 }
