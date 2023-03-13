@@ -1,3 +1,5 @@
+import NeuralNetwork from "../../neuralNetwork/neuralNetwork";
+
 interface SignalOut{
   up:number,
   right:number,
@@ -15,7 +17,7 @@ export class CarControls{
     left:0,
     }
   }
-  update(){}
+  update():void{}
 }
 
 export class CarHumanControl extends CarControls{
@@ -24,32 +26,32 @@ export class CarHumanControl extends CarControls{
      
     addEventListener('keydown', (e)=>{;
       switch(e.key){
-        case 'ArrowUp':
+        case 'w':
           this.signalsOut.up = 1;
           break;
-        case 'ArrowRight':
+        case 'd':
           this.signalsOut.right = 1;
           break;
-        case 'ArrowLeft':
+        case 'a':
           this.signalsOut.left = 1;
           break;
-        case 'ArrowDown':
+        case 's':
           this.signalsOut.down = 1;
           break;
       }
     })
     addEventListener('keyup', (e)=>{
       switch(e.key){
-        case 'ArrowUp':
+        case 'w':
           this.signalsOut.up = 0;
           break;
-        case 'ArrowRight':
+        case 'd':
           this.signalsOut.right = 0;
           break;
-        case 'ArrowLeft':
+        case 'a':
           this.signalsOut.left = 0;
           break;
-        case 'ArrowDown':
+        case 's':
           this.signalsOut.down = 0;
           break;
       }
@@ -62,5 +64,20 @@ export class CarTrafficControl extends CarControls{
   constructor(){
     super()
     this.signalsOut.up = 1
+  }
+}
+
+export class AICarControl extends CarControls{
+  neuralNetwork:NeuralNetwork;
+  constructor(){
+    super();
+    this.neuralNetwork = new NeuralNetwork([7, 8, 4]) ;
+  }
+  updateNetwork(signals:Array<number>):void {
+    const neuralNetworkResults =  this.neuralNetwork.feedFoward(signals);
+    this.signalsOut.up = neuralNetworkResults[0];
+    this.signalsOut.right = neuralNetworkResults[1];
+    this.signalsOut.down = neuralNetworkResults[2];
+    this.signalsOut.left = neuralNetworkResults[3];
   }
 }

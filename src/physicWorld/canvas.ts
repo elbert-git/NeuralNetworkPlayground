@@ -75,5 +75,9 @@ export default class Canvas{
      
     // restor context
     this.ctx.restore();
+
+    //! temp put camera control here
+    const car = objects.humanCar
+    this.cameraPosition = car.position.scale(this.camearaViewScale.x)
   }
 }

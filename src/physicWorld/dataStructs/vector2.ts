@@ -36,6 +36,6 @@ export default class Vector2{
   }
    
   magnitude(){
-    return Math.sqrt(this.x+this.y)
+    return Math.sqrt(Math.pow(this.x, 2)+Math.pow(this.y, 2))
   }
 }

@@ -135,18 +135,20 @@ export default class PhysicsObjects{
       })
     }
 
-    // for every polygon: check collision
+    // for every polygon get all collisions points
+    let collisions:Array<Vector2> = []
     for (let index = 0; index < collidersToCollideWith.length; index++) {
-      if(this.checkCollisionWith(collidersToCollideWith[index])){
-        console.log('collision detected')
-        const collision = this.checkCollisionWith(collidersToCollideWith[index])
-        this.onCollision(collision);
-        break; 
-      }
+      collisions = [...collisions, ...this.checkCollisionWith(collidersToCollideWith[index])]
+    }
+
+    // if have collission points, call OnCollisios
+    if(collisions.length > 0){
+      console.log('collision detected')
+      this.onCollision(collisions);
     }
   }
    
-  checkCollisionWith(object:PhysicsObjects):Vector2|null{
+  checkCollisionWith(object:PhysicsObjects){
     // get this computed vertices
     const thisVertices = this.computeTransformedVertices();
     // get this edges
@@ -156,17 +158,18 @@ export default class PhysicsObjects{
     // get other objects edges
     const otherEdges = Edge.getEdges(otherVertices);
      
+    const collisions:Array<Vector2> = []
     for (let thisEdgeIndex = 0; thisEdgeIndex < thisEdges.length; thisEdgeIndex++) {
       for (let otherEdgeIndex = 0; otherEdgeIndex < otherEdges.length; otherEdgeIndex++) {
         const thisEdge = thisEdges[thisEdgeIndex];
         const otherEdge = otherEdges[otherEdgeIndex]
         const collision = thisEdge.getIntersectionWith(otherEdge)
-        if(collision){return collision}
+        if(collision){collisions.push(collision)}
       }
     }
-    return null // just to satify typsecript squiggly lines
+    return collisions // just to satify typsecript squiggly lines
   }
 
-  onCollision(collision:Vector2|null){}
+  onCollision(collision:Array<Vector2>){}
 }
  

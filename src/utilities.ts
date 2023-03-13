@@ -9,3 +9,7 @@ export function rad2Deg(rad:number){
 export function lerp(a:number, b:number, t:number){
 	return a + t * ( b - a );
 }
+
+export function createRandomWeight(randomFactor=1){
+	return ((Math.random()*2)-1) * randomFactor
+}
