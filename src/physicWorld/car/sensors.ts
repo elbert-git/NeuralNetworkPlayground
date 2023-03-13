@@ -17,22 +17,43 @@ class SensorRay extends PhysicsObjects{
   }
 
   // get readings
-  onCollision(collision: Vector2 | null): void {
-    if(collision){
-      const computedPosition = this.position.add(this.parentPosition);
-      const relativeCollisionPos = computedPosition.subtract(computedPosition);
-      const collisionMagnitude = relativeCollisionPos.magnitude();
-      this.reading = (collisionMagnitude/this.distance)^-1;
+  onCollision(collisions:Array<Vector2>): void {
 
-      // temp draw ctx
+    // get nearest collision point. 
+    let nearestPoint:Vector2|null = null;
+    let currentNearestDistance = Infinity;
+    collisions.forEach((point)=>{
+      const distance = Math.abs(
+        point.subtract(this.position.add(this.parentPosition)).magnitude()
+      );
+      if(distance < currentNearestDistance){
+        nearestPoint = point
+        currentNearestDistance = distance;
+      }
+      
+      //!temp draw all points
       const circleIndicatorRadius = 10
       const ctx = new Experience().processes[0].canvas.ctx;
+      ctx.beginPath()
       ctx.fillStyle = 'yellow'
-      ctx.arc(collision.x, collision.y, circleIndicatorRadius, 0, Math.PI*2)
+      ctx.arc(point!.x, point!.y, circleIndicatorRadius, 0, Math.PI*2)
       ctx.fill();
-    }
-  }
+    })
 
+    // handle reading
+    const computedPosition = this.position.add(this.parentPosition);
+    const relativeCollisionPos = computedPosition.subtract(computedPosition);
+    const collisionMagnitude = relativeCollisionPos.magnitude();
+    this.reading = (collisionMagnitude/this.distance)^-1;
+
+    // visualise the point
+    const circleIndicatorRadius = 10
+    const ctx = new Experience().processes[0].canvas.ctx;
+    ctx.beginPath()
+    ctx.fillStyle = 'red'
+    ctx.arc(nearestPoint!.x, nearestPoint!.y, circleIndicatorRadius, 0, Math.PI*2)
+    ctx.fill();
+  }
 }
 
 export default class Sensors extends PhysicsObjects{
@@ -58,5 +79,12 @@ export default class Sensors extends PhysicsObjects{
       //push ray
       this.children.push(newRay)
     }
+  }
+   
+  getReadings(){
+    const finalResults:Array<number> = []
+    this.children.forEach((ray)=>{
+      ray.get 
+    })
   }
 }
