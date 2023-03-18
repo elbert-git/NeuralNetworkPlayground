@@ -1,4 +1,5 @@
 import Vector2 from "./dataStructs/vector2";
+import PhysicsObjects from "./physicsObject";
 import { physicsObjectList } from "./physicsWorld";
 
 interface canvasSize{
@@ -14,6 +15,7 @@ export default class Canvas{
   size:canvasSize;
   cameraPosition:Vector2;
   camearaViewScale:Vector2;
+  cameraSubject:PhysicsObjects|null
 
   constructor(parentElement:HTMLElement){
     //create canvas
@@ -28,6 +30,7 @@ export default class Canvas{
     this.cameraPosition = new Vector2(0,0);
     const zoomOut = 2
     this.camearaViewScale = new Vector2(1/zoomOut, 1/zoomOut);
+    this.cameraSubject = null
      
     // on resize
     this.size = {x: 0, y: 0}
@@ -59,6 +62,9 @@ export default class Canvas{
   draw(objects:physicsObjectList){
     // clear screen
     this.clear()
+    
+    // handle camerea
+    this.#handleCamera();
 
     // handle context
     this.ctx.save();
@@ -79,5 +85,13 @@ export default class Canvas{
     //! temp put camera control here
     // const car = objects.humanCar
     // this.cameraPosition = car.position.scale(this.camearaViewScale.x)
+  }
+   
+  #handleCamera(){
+    if(this.cameraSubject){
+      const newPosition = this.cameraSubject.position.scale(this.camearaViewScale.x);
+      newPosition.x = 0
+      this.cameraPosition = newPosition
+    }
   }
 }

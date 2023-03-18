@@ -1,8 +1,9 @@
-import PhysicsObjects from "../physicWorld/physicsObject"
-import Vector2 from "../physicWorld/dataStructs/vector2"
-import Polygon from "../physicWorld/dataStructs/polygon"
+import PhysicsObjects from "../physicsObject"
+import Vector2 from "../dataStructs/vector2"
+import Polygon from "../dataStructs/polygon"
+import { roadVars } from "./roadConstants"
 
-export function createRoad(roadWidth:number, roadHeight:number){
+function createRoad(roadWidth:number, roadHeight:number){
   const road = new PhysicsObjects(new Polygon([
     new Vector2(-roadWidth, 0),
     new Vector2(roadWidth, 0),
@@ -14,7 +15,7 @@ export function createRoad(roadWidth:number, roadHeight:number){
   return road
 }
 
-export function createSideLine(allLanesWidth:number, roadHeight:number, isLeft:boolean){
+function createSideLine(allLanesWidth:number, roadHeight:number, isLeft:boolean){
   const laneThickness = 5
 
   const pos = isLeft ? -allLanesWidth : allLanesWidth
@@ -33,7 +34,7 @@ export function createSideLine(allLanesWidth:number, roadHeight:number, isLeft:b
   return sideLine
 }
 
-export function createLaneObjects(laneCount:number, allLanesWidth:number, roadHeight:number){
+function createLaneObjects(laneCount:number, allLanesWidth:number, roadHeight:number){
   const laneThickness = 5
   const allLaneObjects:any = {}
 
@@ -57,4 +58,21 @@ export function createLaneObjects(laneCount:number, allLanesWidth:number, roadHe
    
   return allLaneObjects
 
+}
+
+// * create road
+const road = createRoad(roadVars.roadWidth, roadVars.roadHeight)
+
+// * handle sidelines and lanes
+// create sideLines
+const leftSideLine = createSideLine(roadVars.allLanesWidth, roadVars.roadHeight, true);
+const rightSideLine = createSideLine(roadVars.allLanesWidth, roadVars.roadHeight, false);
+// create lanes
+const allLaneObjects = createLaneObjects(roadVars.laneCount, roadVars.allLanesWidth, roadVars.roadHeight)
+
+export const roadObjects = {
+  road,
+  leftSideLine,
+  rightSideLine,
+  ...allLaneObjects
 }

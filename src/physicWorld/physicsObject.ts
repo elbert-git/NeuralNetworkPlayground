@@ -37,6 +37,7 @@ export default class PhysicsObjects{
   }
 
   draw(ctx:CanvasRenderingContext2D){
+    ctx.beginPath();
     // update objects
     this.update();
 

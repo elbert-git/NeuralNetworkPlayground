@@ -23,14 +23,8 @@ export default class ObjectStyle{
     this.imageSize = new Vector2(0,0);
     this.opacity = 1;
   }
-  addImage(path:string, width:number, height:number){
-    //create img element
-    const image = document.createElement('img');
-    image.src = path;
-    // assign to object
-    image.onload = ()=>{
-      this.images.push(image);
-      this.imageSize = new Vector2(width, height)
-    }
+  addImage(image:HTMLImageElement, width:number, height:number){
+    this.images.push(image);
+    this.imageSize = new Vector2(width, height)
   }
 }

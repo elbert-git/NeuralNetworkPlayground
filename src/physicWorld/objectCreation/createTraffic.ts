@@ -1,6 +1,6 @@
-import Car from "../physicWorld/car/car"
-import Vector2 from "../physicWorld/dataStructs/vector2"
-import { lerp } from "../utilities"
+import Car from "../car/car"
+import Vector2 from "../dataStructs/vector2"
+import { lerp } from "../../utilities"
 import { createTrafficCar } from "./createCar"
 
 export function createRowOFTraffic(laneCount:number, allLanesWidth:number, yHeight:number, spawnChance:number){
