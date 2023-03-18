@@ -13,3 +13,10 @@ export function lerp(a:number, b:number, t:number){
 export function createRandomWeight(randomFactor=1){
 	return ((Math.random()*2)-1) * randomFactor
 }
+
+export function clamp(val:number, min=-1, max=1){
+	let num = val
+	if(num > max){num = max}
+	if(num < min){num = min}
+	return num
+}

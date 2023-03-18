@@ -1,7 +1,8 @@
 import { physicsObjectList } from "./physicsWorld";
 import {createRoad, createLaneObjects, createSideLine } from "../objectCreation/createRoad";
 import { createRowOFTraffic, createTrafficBlock } from "../objectCreation/createTraffic";
-import { createCar } from "../objectCreation/createCar";
+import { createAICar, createCar } from "../objectCreation/createCar";
+import Generations from "../neuralNetwork/generations";
 
 // * ------------------- create road
 const roadWidth = 400;
@@ -19,7 +20,8 @@ const allLaneObjects = createLaneObjects(laneCount, allLanesWidth, roadHeight)
 
 // *  ------------------- create traffic
 //human car
-const humanCar = createCar();
+// const humanCar = createAICar();
+// const humanCar = createCar();
 // traffic cars
 const trafficRow = createTrafficBlock(5, -300, 500, laneCount, allLanesWidth*2, 0.5);
 
@@ -30,6 +32,8 @@ export const createdObjects:physicsObjectList = {
   leftSideLine, 
   rightSideLine, 
   ... allLaneObjects, 
-  humanCar,
+  // humanCar,
   ...trafficRow
 }
+
+

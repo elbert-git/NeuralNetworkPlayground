@@ -77,7 +77,7 @@ export default class Canvas{
     this.ctx.restore();
 
     //! temp put camera control here
-    const car = objects.humanCar
-    this.cameraPosition = car.position.scale(this.camearaViewScale.x)
+    // const car = objects.humanCar
+    // this.cameraPosition = car.position.scale(this.camearaViewScale.x)
   }
 }

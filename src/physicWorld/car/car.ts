@@ -59,15 +59,6 @@ export default class Car extends PhysicsObjects{
     //translate position
     this.position = this.position.add(finalVector);
   }
-}
- 
-export class HumanCar extends Car{
-  constructor(polygon:Polygon){
-    super(polygon)
-    this.controls = new CarHumanControl();
-    // create sensor for driving car
-    this.children.push(new Sensors( new Polygon([]), 7, 180, 500))
-  }
 
   // on collision disable controls and physics and fade it
   onCollision(collisions:Array<Vector2>): void {
@@ -78,6 +69,15 @@ export class HumanCar extends Car{
     this.children[0].children.forEach((child)=>{
       child.physicsData.enabled = false
     })
+  }
+}
+ 
+export class HumanCar extends Car{
+  constructor(polygon:Polygon){
+    super(polygon)
+    this.controls = new CarHumanControl();
+    // create sensor for driving car
+    this.children.push(new Sensors( new Polygon([]), 7, 180, 500))
   }
 }
 
@@ -99,7 +99,10 @@ export class AICar extends Car{
     this.sensors = new Sensors( new Polygon([]), 7, 180, 500) 
     this.children.push(this.sensors);
   }
-  processControls(): void {
-    this.sensors.getReadings();
+  update(): void {
+    const sensorReadings = this.sensors.getReadings();
+    const controls:any = this.controls; // to shut the typescript up
+    controls.updateNetwork(sensorReadings);
+    super.update();
   }
 }

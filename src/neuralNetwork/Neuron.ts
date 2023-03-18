@@ -1,4 +1,5 @@
-import { createRandomWeight } from "../utilities";
+import { clamp, createRandomWeight } from "../utilities";
+import { NeuronData } from "./dataManagement/neuralNetworkData";
 
 class NeuronConnection{
   connectingNeuron:Neuron;
@@ -39,5 +40,22 @@ export class Neuron{
     }else{
       return this.rawInputValue;
     }
+  }
+  convertToJson():NeuronData{
+    const data:NeuronData = {
+      bias: this.bias,
+      connectionWeights: this.inputConnections.map((connection)=>{
+        return connection.weight
+      })
+    }
+    return data;
+  }
+  mutate(mutateFactor:number){
+    this.bias += createRandomWeight(mutateFactor);
+    this.bias = clamp(this.bias);
+    this.inputConnections.forEach((connection)=>{
+      connection.weight += createRandomWeight(mutateFactor);
+      connection.weight = clamp(connection.weight);
+    })
   }
 }

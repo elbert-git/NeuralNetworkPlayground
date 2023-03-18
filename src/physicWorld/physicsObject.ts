@@ -143,7 +143,7 @@ export default class PhysicsObjects{
 
     // if have collission points, call OnCollisios
     if(collisions.length > 0){
-      console.log('collision detected')
+      // console.log('collision detected')
       this.onCollision(collisions);
     }
   }

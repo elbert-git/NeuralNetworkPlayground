@@ -31,7 +31,7 @@ class SensorRay extends PhysicsObjects{
         currentNearestDistance = distance;
       }
       
-      //!temp draw all points
+      //!temp draw closest points
       const circleIndicatorRadius = 10
       const ctx = new Experience().processes[0].canvas.ctx;
       ctx.beginPath()
@@ -42,9 +42,9 @@ class SensorRay extends PhysicsObjects{
 
     // handle reading
     const computedPosition = this.position.add(this.parentPosition);
-    const relativeCollisionPos = computedPosition.subtract(computedPosition);
+    const relativeCollisionPos = computedPosition.subtract(nearestPoint!);
     const collisionMagnitude = relativeCollisionPos.magnitude();
-    this.reading = (collisionMagnitude/this.distance)^-1;
+    this.reading = (collisionMagnitude/this.distance);
 
     // visualise the point
     const circleIndicatorRadius = 10
@@ -83,8 +83,9 @@ export default class Sensors extends PhysicsObjects{
    
   getReadings(){
     const finalResults:Array<number> = []
-    this.children.forEach((ray)=>{
-      ray.get 
+    this.children.forEach((ray:any)=>{
+      finalResults.push(ray.reading);
     })
+    return finalResults
   }
 }
