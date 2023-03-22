@@ -1,6 +1,10 @@
 *{margin: 0; padding: 0; box-sizing: border-box;}
 body, html{height: 100%; width:100%;}
 
+.red{
+  outline: red 1px solid;
+}
+
 body{
   display: flex;
   align-items: center;
@@ -20,3 +24,30 @@ body{
 }
 
 .debugRedLine{outline: rgba(255, 0, 0, 0.507) solid 1px}
+
+
+/* hanlding the ui  */
+.ui-container{
+  height: 100%;
+  padding:1em;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  width: 20em;
+  gap: 0.5em
+}
+
+.data-line{
+  display: flex;
+  gap: 0.25em;
+}
+
+.main-buttons{
+  display: flex;
+  gap: 1em
+}
+.main-buttons button{
+  height: 100%;
+  padding: 1em;
+  width: 100%;
+}

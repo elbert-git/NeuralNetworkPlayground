@@ -3,6 +3,8 @@ import { AICar, HumanCar, TrafficCar } from "../car/car";
 import Polygon from "../dataStructs/polygon";
 import ObjectStyle from "../dataStructs/ObjectStyle";
 import ImageLibrary from "../../LoadingAssets/LoadImages";
+import NeuralNetwork from "../../neuralNetwork/neuralNetwork";
+import UI from "../../UI";
 
 const imageLibrary = new ImageLibrary();
 
@@ -42,10 +44,17 @@ export function createTrafficCar(){
   return car
 }
 
-export function createAICar(){
-  const car = new AICar(carPolygon)
+export function createAICar(network:NeuralNetwork|null=null):any{
+  const car:any = new AICar(carPolygon)
+  // handle physics
   car.physicsData.enabled = true;
   car.physicsData.collidesWith = ['road', 'traffic']
+  // handle style
   car.style = createCarStyle();
+  // create with mutated nerual network
+  if(network){
+    car.controls.neuralNetwork = network.clone();
+    car.controls.neuralNetwork.mutate(new UI().mutatingFactor)
+  }
   return car
 }

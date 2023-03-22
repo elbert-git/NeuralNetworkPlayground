@@ -1,7 +1,7 @@
 import { clamp, createRandomWeight } from "../utilities";
 import { NeuronData } from "./dataManagement/neuralNetworkData";
 
-class NeuronConnection{
+export class NeuronConnection{
   connectingNeuron:Neuron;
   weight:number;
   constructor(neuron:Neuron){

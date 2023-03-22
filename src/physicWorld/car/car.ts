@@ -62,6 +62,7 @@ export default class Car extends PhysicsObjects{
 
   // on collision disable controls and physics and fade it
   onCollision(collisions:Array<Vector2>): void {
+    collisions
     this.status = 'crashed'
     this.physicsData.enabled = false;
     this.style.opacity = 0.5

@@ -6,6 +6,7 @@ import Generations from './neuralNetwork/generations';
 import ImageLibrary from './LoadingAssets/LoadImages';
 import carOutlines from "/assets/carOutlines.svg";
 import carFill from "/assets/carFill.svg";
+import UI from './UI';
 
 
 // testing image loading
@@ -13,6 +14,7 @@ import carFill from "/assets/carFill.svg";
   const imageLibrary = new ImageLibrary();
   await imageLibrary.loadImage('carOutlines', carOutlines);
   await imageLibrary.loadImage('carFill', carFill);
+
 
   // create main process
   const experience = new Experience();
@@ -28,5 +30,9 @@ import carFill from "/assets/carFill.svg";
   // handle generations
   const generations = new Generations()
   experience.processes.push(generations);
-  generations.startGeneration(100);
+   
+  // setup ui
+  const ui = new UI()
+  // connect ui to generations
+  ui.controlButtonPressed = generations.startGeneration.bind(generations)
 })()

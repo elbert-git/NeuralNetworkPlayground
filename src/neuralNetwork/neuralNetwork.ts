@@ -60,7 +60,7 @@ export default class NeuralNetwork{
     })
     return finalResults;
   }
-  saveState(){
+  convertToJson(){
     const nnData:NeuralNetworkData = {
       data: []
     }
@@ -74,14 +74,34 @@ export default class NeuralNetwork{
       }
       nnData.data.push(layerData);
     }
-    // save data to local storage
-    window.localStorage.setItem('nnData', JSON.stringify(nnData));
+    return nnData
   }
-  loadState():NeuralNetworkData|null{
-    // save data to local storage
-    const rawData = window.localStorage.getItem('nnData');
-    const data = rawData ? JSON.parse(rawData) : null;
-    return data
+  convertFromJson(data:NeuralNetworkData){
+    const nnData = data.data
+    // for each layer data
+    nnData.forEach((layer, layerIndex)=>{
+      const newLayer:Array<Neuron> = []
+      // for each nueron
+      layer.forEach((neuronData)=>{
+        // add  new neuron
+        const newNeuron = new Neuron()
+        // copy bias
+        newNeuron.bias = neuronData.bias
+        // if not first layer. copy connections
+        if(layerIndex > 0){
+          //create connections
+          newNeuron.connectToLayer(this.layers[layerIndex-1]);
+          // modify connections
+          newNeuron.inputConnections.forEach((connection, connectionIndex)=>{
+            connection.weight = neuronData.connectionWeights[connectionIndex]
+          })
+        }
+        //add new nueron to new layer
+        newLayer.push(newNeuron)
+      })
+      //save new layer
+      this.layers[layerIndex] =  newLayer
+    })
   }
   mutate(mutateFactor:number){
     // for all neurons mutate
@@ -92,5 +112,11 @@ export default class NeuralNetwork{
         neuron.mutate(mutateFactor)
       }
     }
+  }
+  clone(){
+    const thisNeuralNetworkData = this.convertToJson();
+    const newNetwork = new NeuralNetwork([]);
+    newNetwork.convertFromJson(thisNeuralNetworkData);
+    return newNetwork;
   }
 }

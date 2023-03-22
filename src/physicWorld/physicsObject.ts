@@ -171,6 +171,6 @@ export default class PhysicsObjects{
     return collisions // just to satify typsecript squiggly lines
   }
 
-  onCollision(collision:Array<Vector2>){}
+  onCollision(collision:Array<Vector2>){collision}
 }
  
