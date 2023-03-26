@@ -51,8 +51,8 @@ class SensorRay extends PhysicsObjects{
     this.reading = (collisionMagnitude/this.distance);
 
     // visualise the point
-    const circleIndicatorRadius = 10
-    const ctx = new Experience().processes[0].canvas.ctx;
+    const circleIndicatorRadius = 10;circleIndicatorRadius
+    const ctx = new Experience().processes[0].canvas.ctx;ctx;
     // draw all intersection points
     if(this.visible){
       // ctx.beginPath()

@@ -33,7 +33,7 @@ export default class Observer{
 
     //find best car in furthes lane
     let bestCar:any = allAICars[0];
-    let furthestDistance = 0
+    let furthestDistance = 0; furthestDistance
     sortedCars[sortedCars.length-1].forEach((car:any)=>{
       if(car.position.y < bestCar.position.y){ // found better car
         furthestDistance = car.position.y;

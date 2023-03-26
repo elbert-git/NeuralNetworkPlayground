@@ -9,7 +9,6 @@ import carFillYellow from "/assets/carFillYellow.svg";
 import carFillBlue from "/assets/carFillBlue.svg";
 import carFillGrey from "/assets/carFillGrey.svg";
 import UI from './UI';
-import Observer from './observer';
 
 
 (async()=>{
@@ -36,7 +35,7 @@ import Observer from './observer';
   experience.processes.push(generations);
    
   // setup ui
-  const ui = new UI()
+  const ui = new UI();ui
   // connect ui to generations
   // ui.startButtonPressed = generations.startGeneration.bind(generations)
 })()
