@@ -9,12 +9,12 @@
   <body>
     <div id="road"></div>
     <div class="ui-container red">
-      <h1>title</h1>
-      <p>project how to</p>
+      <h1>Machine Learning Self Driving Car</h1>
+      <p>Short Project Description</p>
       <hr/>
       <!-- data show -->
       <div class="data-line">
-        <div>Furthest Distance:</div>
+        <div>Rows of traffic passed:</div>
         <div id="distanceLabel">0</div>
       </div>
       <div class="data-line">
@@ -23,14 +23,24 @@
       </div>
       <hr/>
       <!-- generation control -->
+        <div class="slidecontainer">
+          <div>Mutation Factor: <span id="mutationFactorLabel">0.5</span></div>
+          <input type="range" min="0.001" max="0.5" value="0.5" class="slider" step="0.01" id="mutationRange">
+        </input>
+        <div class="slidecontainer">
+          <div>Number of cars per generation: <span id="numberOfCarsPerGenerationLabel">50</span></div>
+          <input type="range" min="1" max="1000" value="50" class="slider" id="carsPerGenerationRange">
+        </div>
+      <hr/>
+      <!-- buttons -->
       <div class="main-buttons">
-        <button id="generationControlButton">New Generation</button>
-        <div class="slidecontainer">
-          <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-        </div>
-        <div class="slidecontainer">
-          <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
-        </div>
+        <button id="startButton">Start Generation</button>
+        <button id="mutateButton" disabled="true">Mutate Network</button>
+      </div>
+      <div class="main-buttons">
+        <button id="saveButton">Save</button>
+        <button id="loadButton">Load</button>
+        <button id="clearButton">Clear Data</button>
       </div>
       <hr/>
       <!-- project explanation -->

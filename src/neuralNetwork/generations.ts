@@ -8,6 +8,7 @@ import { roadVars } from "../physicWorld/objectCreation/roadConstants";
 import { AICar } from "../physicWorld/car/car";
 import UI from "../UI";
 import NeuralNetwork from "./neuralNetwork";
+import Observer from "../observer";
 
 export default class Generations{
   //! this is a weird super tentacle class that reaches to differnt parts of the stack and chagnes things.
@@ -19,6 +20,7 @@ export default class Generations{
   aiCarGroup:PhysicsObjects;
   farthestCar:AICar|null;
   bestNetwork:NeuralNetwork|null;
+  observer:Observer = new Observer();
   constructor(){
     this.physicsWorld = new Experience().processes[0];
     this.active = false
@@ -33,52 +35,64 @@ export default class Generations{
     this.farthestCar = null;
     this.bestNetwork = null;
 
-    //! todo test if all ssame weight
-  //   window.addEventListener('keydown', (e)=>{
-  //     if(e.key === 'a'){
-  //       const world:PhysicsWorld = new Experience().processes[0]
-  //       const group:any = world.objects['aiCarGroup'].children;
-  //       group.forEach((obj:any)=>{
-  //         console.log(obj.controls.neuralNetwork.layers[0][0].bias);
-  //       })
-  //     }
-  //   })
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === '0'){ this.freshStart()}
+      if(e.key === '1'){ this.restartGeneration()}
+      if(e.key === '2'){ this.createNewGeneration()}
+    })
   }
-  startGeneration(){
+
+  freshStart(){ // for a fresh 
+    // *  -------------------
+    // for a fresh start 
+    // all ai cars random
+    // just randomly populate ai cars by random networks
+    this.#spawnAICarsAndTraffic();
+  }
+
+  restartGeneration(){
+    // *  -------------------
+    // clear all cars and colliders
+    this.clearCars();
+    // repopulate with mutations of the previous generation
+    this.#spawnAICarsAndTraffic(this.bestNetwork ? this.bestNetwork : null);
+  }
+
+  createNewGeneration(){
+    // * ----------------------
+    // save best network
+    const bestCar:any = this.farthestCar;
+    this.bestNetwork = bestCar.controls.neuralNetwork;
+    //clear cars
+    this.clearCars();
+    // start new generation with the mutations from the new network
+    this.#spawnAICarsAndTraffic(this.bestNetwork);
+  }
+
+  #spawnAICarsAndTraffic(network:NeuralNetwork|null = null){
     if(!this.active){
       this.active = true;
       // populate the world with a certain amount of ai cars
       for (let index = 0; index < new UI().carsPerGeneration; index++) {
-        const car = this.bestNetwork ?  createAICar(this.bestNetwork) : createAICar();
+        const car = network ? createAICar(network) : createAICar();
         this.aiCarGroup.children.push(car);
       }
       this.physicsWorld.addObject('aiCarGroup', this.aiCarGroup);
       //populate road with a certain amount of traffic blocks
-      const trafficRow = createTrafficBlock(5, -700, 500, roadVars.laneCount, roadVars.allLanesWidth*2, 0.5);
+      const trafficRow = createTrafficBlock(5, -700, 1000, roadVars.laneCount, roadVars.allLanesWidth*2, 0.5);
       Object.keys(trafficRow).forEach((key)=>{
         this.trafficCarGroup.children.push(trafficRow[key]);
       })
       this.physicsWorld.addObject('trafficCarGroup', this.trafficCarGroup)
-    }else{
-      // restart generation
-      this.endGeneration();
-      this.startGeneration()
     }
   }
-  update(){
-    // get car with biggest y position
-    this.farthestCar = this.#getFarthestCar();
 
-    // focus camera on that car
-    this.physicsWorld.canvas.cameraSubject = this.farthestCar
-  }
-  endGeneration(){
+  clearCars(){
+    // *  -------------------
+    // clear all cars and colliders
+    // if there is a performance improvement. save the network
     if(this.active){
-      // save best neural network this this calss
-      const controls:any = this.farthestCar?.controls;
-      this.bestNetwork = controls.neuralNetwork.clone();
       this.active = false;
-
       // depopulate all cars in the collection
       delete this.physicsWorld.objects['trafficCarGroup'];
       delete this.physicsWorld.objects['aiCarGroup'];
@@ -91,17 +105,16 @@ export default class Generations{
       console.error('no generation is not currently active');
     }
   }
-  #getFarthestCar():any{
-    const allAICars = this.aiCarGroup.children;
-    let farthestY = 0
-    let fartherCar = allAICars[0];
-    allAICars.forEach((car)=>{
-      const posY = car.position.y
-      if(posY < farthestY){
-        farthestY = posY;
-        fartherCar = car;
-      }
-    })
-    return fartherCar
+
+
+
+  update(){
+    // get car with biggest y position
+    if(this.active){
+      this.farthestCar = this.observer.getBestCar();
+    }
+
+    // focus camera on that car
+    this.physicsWorld.canvas.cameraSubject = this.farthestCar
   }
 }

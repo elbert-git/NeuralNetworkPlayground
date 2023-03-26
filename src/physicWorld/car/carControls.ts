@@ -73,7 +73,8 @@ export class AICarControl extends CarControls{
     super();
     this.neuralNetwork = new NeuralNetwork([7, 8, 4]) ;
   }
-  updateNetwork(signals:Array<number>):void {
+  updateNetwork(signals:Array<number>, print:boolean=false):void {
+    if(print){console.table(signals[3])};
     const neuralNetworkResults =  this.neuralNetwork.feedFoward(signals);
     this.signalsOut.up = neuralNetworkResults[0];
     this.signalsOut.right = neuralNetworkResults[1];

@@ -4,6 +4,7 @@ import { lerp } from "../../utilities";
 import { AICarControl, CarControls, CarHumanControl, CarTrafficControl } from "./carControls";
 import Vector2 from "../dataStructs/vector2";
 import Sensors from "./sensors";
+import ImageLibrary from "../../LoadingAssets/LoadImages";
 
 export default class Car extends PhysicsObjects{
   controls:CarControls;
@@ -92,6 +93,7 @@ export class TrafficCar extends Car{
 
 export class AICar extends Car{
   sensors:Sensors;
+  isHighlighted:boolean = false;
   constructor(polygon:Polygon){
     super(polygon)
     this.controls = new AICarControl();
@@ -103,7 +105,25 @@ export class AICar extends Car{
   update(): void {
     const sensorReadings = this.sensors.getReadings();
     const controls:any = this.controls; // to shut the typescript up
-    controls.updateNetwork(sensorReadings);
+    if(this.isHighlighted){controls.updateNetwork(sensorReadings, true)}
+    else{controls.updateNetwork(sensorReadings);}
     super.update();
+  }
+  highlight(b:boolean = false){
+    if(b){
+      this.isHighlighted = true;
+      // change car color
+      this.style.images[0] = new ImageLibrary().library['carFillYellow'];
+      // turn on sensors
+      const sensor:any  = this.children[0];
+      sensor.highlight(true);
+    }else{
+      this.isHighlighted = false;
+      // change car color 
+      this.style.images[0] = new ImageLibrary().library['carFillBlue'];
+      // turn off sensors
+      const sensor:any  = this.children[0];
+      sensor.highlight();
+    }
   }
 }

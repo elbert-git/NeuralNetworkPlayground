@@ -18,12 +18,12 @@ const carPolygon = new Polygon([
 ])
 
 //create car style
-const createCarStyle = ()=>{
+const createCarStyle = (color:string="carFillYellow")=>{
   const carStyle = new ObjectStyle()
   carStyle.stroke = false;
   carStyle.fill = false;
   carStyle.fillStyle = 'red'
-  carStyle.addImage(imageLibrary.library.carFill, carSize[0]*2, carSize[1]*2);
+  carStyle.addImage(imageLibrary.library[color], carSize[0]*2, carSize[1]*2);
   carStyle.addImage(imageLibrary.library.carOutlines, carSize[0]*2, carSize[1]*2);
   return carStyle
 }
@@ -40,7 +40,7 @@ export function createTrafficCar(){
   const car = new TrafficCar(carPolygon)
   car.carSpeed = 10
   car.physicsData.colliderTag = 'traffic'
-  car.style = createCarStyle();
+  car.style = createCarStyle('carFillGrey');
   return car
 }
 
@@ -50,7 +50,7 @@ export function createAICar(network:NeuralNetwork|null=null):any{
   car.physicsData.enabled = true;
   car.physicsData.collidesWith = ['road', 'traffic']
   // handle style
-  car.style = createCarStyle();
+  car.style = createCarStyle('carFillBlue');
   // create with mutated nerual network
   if(network){
     car.controls.neuralNetwork = network.clone();

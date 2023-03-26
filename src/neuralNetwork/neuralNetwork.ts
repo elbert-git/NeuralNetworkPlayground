@@ -47,6 +47,35 @@ export default class NeuralNetwork{
       this.layers.push(layer);
     })
   }
+  static createFromData(data:NeuralNetworkData){
+    const newNN = new NeuralNetwork([]);
+    const nnData = data.data
+    // for each layer data
+    nnData.forEach((layer, layerIndex)=>{
+      const newLayer:Array<Neuron> = []
+      // for each nueron
+      layer.forEach((neuronData)=>{
+        // add  new neuron
+        const newNeuron = new Neuron()
+        // copy bias
+        newNeuron.bias = neuronData.bias
+        // if not first layer. copy connections
+        if(layerIndex > 0){
+          //create connections
+          newNeuron.connectToLayer(newNN.layers[layerIndex-1]);
+          // modify connections
+          newNeuron.inputConnections.forEach((connection, connectionIndex)=>{
+            connection.weight = neuronData.connectionWeights[connectionIndex]
+          })
+        }
+        //add new nueron to new layer
+        newLayer.push(newNeuron)
+      })
+      //save new layer
+      newNN.layers[layerIndex] =  newLayer
+    })
+    return newNN
+  }
   feedFoward(signals:Array<number>){
     //set signal inputs
     this.layers[0].forEach((neuron, index)=>{
@@ -76,33 +105,6 @@ export default class NeuralNetwork{
     }
     return nnData
   }
-  convertFromJson(data:NeuralNetworkData){
-    const nnData = data.data
-    // for each layer data
-    nnData.forEach((layer, layerIndex)=>{
-      const newLayer:Array<Neuron> = []
-      // for each nueron
-      layer.forEach((neuronData)=>{
-        // add  new neuron
-        const newNeuron = new Neuron()
-        // copy bias
-        newNeuron.bias = neuronData.bias
-        // if not first layer. copy connections
-        if(layerIndex > 0){
-          //create connections
-          newNeuron.connectToLayer(this.layers[layerIndex-1]);
-          // modify connections
-          newNeuron.inputConnections.forEach((connection, connectionIndex)=>{
-            connection.weight = neuronData.connectionWeights[connectionIndex]
-          })
-        }
-        //add new nueron to new layer
-        newLayer.push(newNeuron)
-      })
-      //save new layer
-      this.layers[layerIndex] =  newLayer
-    })
-  }
   mutate(mutateFactor:number){
     // for all neurons mutate
     for (let layerIndex = 0; layerIndex < this.layers.length; layerIndex++) {
@@ -115,8 +117,7 @@ export default class NeuralNetwork{
   }
   clone(){
     const thisNeuralNetworkData = this.convertToJson();
-    const newNetwork = new NeuralNetwork([]);
-    newNetwork.convertFromJson(thisNeuralNetworkData);
+    const newNetwork = NeuralNetwork.createFromData(thisNeuralNetworkData);
     return newNetwork;
   }
 }

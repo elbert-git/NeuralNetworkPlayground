@@ -6,6 +6,7 @@ import PhysicsObjects from "../physicsObject";
 class SensorRay extends PhysicsObjects{
   reading:number;
   distance:number
+  visible:boolean = false;
   constructor(polygon:Polygon, distance:number){
     super(polygon)
     this.reading = 0
@@ -13,12 +14,11 @@ class SensorRay extends PhysicsObjects{
   }
 
   update(): void {
-    this.reading = 0
+    // this.reading = 0
   }
 
   // get readings
   onCollision(collisions:Array<Vector2>): void {
-
     // get nearest collision point. 
     let nearestPoint:Vector2|null = null;
     let currentNearestDistance = Infinity;
@@ -31,13 +31,17 @@ class SensorRay extends PhysicsObjects{
         currentNearestDistance = distance;
       }
       
-      //!temp draw closest points
-      const circleIndicatorRadius = 10
-      const ctx = new Experience().processes[0].canvas.ctx;
-      ctx.beginPath()
-      ctx.fillStyle = 'yellow'
-      ctx.arc(point!.x, point!.y, circleIndicatorRadius, 0, Math.PI*2)
-      ctx.fill();
+      //temp draw closest points
+      if(this.visible){
+        const circleIndicatorRadius = 10
+        const ctx = new Experience().processes[0].canvas.ctx;
+        ctx.beginPath()
+        ctx.fillStyle = 'yellow'
+        ctx.arc(point!.x, point!.y, circleIndicatorRadius, 0, Math.PI*2)
+        ctx.globalOpacity = this.reading;
+        ctx.fill();
+        ctx.globalOpacity = 1;
+      }
     })
 
     // handle reading
@@ -49,10 +53,13 @@ class SensorRay extends PhysicsObjects{
     // visualise the point
     const circleIndicatorRadius = 10
     const ctx = new Experience().processes[0].canvas.ctx;
-    ctx.beginPath()
-    ctx.fillStyle = 'red'
-    ctx.arc(nearestPoint!.x, nearestPoint!.y, circleIndicatorRadius, 0, Math.PI*2)
-    ctx.fill();
+    // draw all intersection points
+    if(this.visible){
+      // ctx.beginPath()
+      // ctx.fillStyle = 'red'
+      // ctx.arc(nearestPoint!.x, nearestPoint!.y, circleIndicatorRadius, 0, Math.PI*2)
+      // ctx.fill();
+    }
   }
 }
 
@@ -78,6 +85,7 @@ export default class Sensors extends PhysicsObjects{
       newRay.physicsData.collidesWith = ['road', 'traffic'];
       //push ray
       this.children.push(newRay)
+      this.highlight();
     }
   }
    
@@ -87,5 +95,13 @@ export default class Sensors extends PhysicsObjects{
       finalResults.push(ray.reading);
     })
     return finalResults
+  }
+
+  highlight(b:boolean=false){
+    this.children.forEach((child)=>{
+      const ray:any = child
+      ray.style.stroke = b;
+      ray.visible = b
+    })
   }
 }
