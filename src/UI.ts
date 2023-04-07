@@ -1,3 +1,6 @@
+import Experience from "./experience";
+import Generations from "./neuralNetwork/generations";
+
 let instance:UI|null = null;
 
 export default class UI{
@@ -8,8 +11,6 @@ export default class UI{
   mutatingFactor:number
   startButtonPressed:()=>void;
   mutateButtonPressed:()=>void;
-  saveButtonPressed:()=>void;
-  loadButtonPressed:()=>void;
   clearButtonPressed:()=>void = ()=>{console.log('clearButtonPressed')};
   // sliders
   elCarsPerGenerationSlider:any;
@@ -20,6 +21,8 @@ export default class UI{
   elSaveButton:any;
   elLoadButton:any;
   elClearButton = document.getElementById('clearButton');
+  generations:Generations = new Experience().processes[1];
+  hasStarted = false;
 
   constructor(){
     // get elements
@@ -31,18 +34,14 @@ export default class UI{
     this.elMutateFactorSlider = document.getElementById('mutationRange')!;
     this.elMutationFactorLabel = document.getElementById('mutationFactorLabel')!;
     this.elMutateButton = document.getElementById('mutateButton')!;
-    this.elSaveButton = document.getElementById('saveButton')!;
-    this.elLoadButton = document.getElementById('loadButton')!;
 
     // define generation options
     this.carsPerGeneration = 100;
     this.mutatingFactor = 0.2
 
     // define callback placeholders
-    this.startButtonPressed = ()=>{console.log('generation button click')}; 
-    this.mutateButtonPressed = ()=>{console.log('mutate button pressed')}
-    this.saveButtonPressed = ()=>{console.log('saved button pressed')}
-    this.loadButtonPressed = ()=>{console.log('loadButtonPressed')}
+    this.startButtonPressed = ()=>{if(this.hasStarted){this.generations.freshStart()}else{this.generations.restartGeneration()}}; 
+    this.mutateButtonPressed = ()=>{this.generations.createNewGeneration();}
 
     // singleton
     if(instance){return instance}
@@ -64,9 +63,6 @@ export default class UI{
     this.elStartButton.addEventListener('click', ()=>{this.elStartButton.innerHTML = "Restart Generation"; this.elMutateButton.disabled = false}); // todo on start enable the mutate button and change to "restart generation"
     this.elStartButton.addEventListener('click', ()=>{this.startButtonPressed()});
     this.elMutateButton.addEventListener('click', ()=>{this.mutateButtonPressed()})
-    this.elSaveButton.addEventListener('click', ()=>{this.saveButtonPressed()})
-    this.elLoadButton.addEventListener('click', ()=>{this.loadButtonPressed()})
-    this.elClearButton?.addEventListener('click', ()=>{this.clearButtonPressed()})
   }
   updateTexts(distance="0", generation="0"){
     this.elFurthestDistanceText.innerHTML = distance;
