@@ -54,7 +54,7 @@ export function createAICar(network:NeuralNetwork|null=null):any{
   // create with mutated nerual network
   if(network){
     car.controls.neuralNetwork = network.clone();
-    car.controls.neuralNetwork.mutate(new UI().mutatingFactor)
+    // car.controls.neuralNetwork.mutate(new UI().mutatingFactor)
   }
   return car
 }

@@ -120,4 +120,21 @@ export default class NeuralNetwork{
     const newNetwork = NeuralNetwork.createFromData(thisNeuralNetworkData);
     return newNetwork;
   }
+  backProp(errors:Array<number>){
+    // match error output
+    if(errors.length !== this.layers[this.layers.length-1].length){console.error('error mismatch')}
+    // reset all neuron errors
+    this.layers.forEach((layer)=>{
+      layer.forEach((neuron)=>{
+        neuron.error = 0
+      })
+    })
+    // for all neurons distribute error and train
+    const lastLayer = this.layers[this.layers.length-1];
+    lastLayer.forEach((neuron, index)=>{
+      neuron.error = errors[index]
+      neuron.distributeError();
+      neuron.train();
+    })
+  }
 }

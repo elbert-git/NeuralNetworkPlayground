@@ -29,7 +29,6 @@ export default class PhysicsWorld{
  addObject(key:string ,physicsObject:PhysicsObjects){
   // add to list.
   this.objects[key] = physicsObject
-
   // to collider groups
   this.addObjectToColliderGroups(physicsObject);
  }

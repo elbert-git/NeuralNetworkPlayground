@@ -132,7 +132,9 @@ export default class PhysicsObjects{
     let collidersToCollideWith:Array<PhysicsObjects> = []
     if(this.physicsData.collidesWith.length > 0){
       this.physicsData.collidesWith.forEach((tag)=>{
-        collidersToCollideWith = [...collidersToCollideWith, ...world.colliderGroups[tag]]
+        if(world.colliderGroups[tag]){
+          collidersToCollideWith = [...collidersToCollideWith, ...world.colliderGroups[tag]]
+        }
       })
     }
 

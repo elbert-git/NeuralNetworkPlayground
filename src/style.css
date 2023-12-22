@@ -31,7 +31,7 @@ body{
   display: flex;
   flex-direction: column;
   justify-items: center;
-  width: 20em;
+  width: 25em;
   gap: 0.5em;
   overflow-y: scroll;
 }
@@ -56,4 +56,19 @@ body{
 .main-buttons button{
   height: 100%;
   padding: 0.5em;
+}
+
+.buttonContainer{
+  display: flex;
+  flex-direction: column;
+  gap:0.5rem;
+  padding: 0.5rem 0rem;
+}
+buttons{width: 100%; margin: 0.5rem}
+
+.rangeContainer{
+  display: flex;
+  gap:0.5rem;
+  align-items: center;
+  justify-content: center;
 }

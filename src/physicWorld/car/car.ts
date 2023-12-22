@@ -18,7 +18,7 @@ export default class Car extends PhysicsObjects{
 
     // carControl vars
     this.pedal = 0;
-    this.turnSpeed = 5
+    this.turnSpeed = 3
     this.rotation = 0;
     this.carSpeed = 20;
 
@@ -48,6 +48,9 @@ export default class Car extends PhysicsObjects{
       }else if(this.controls.signalsOut.right){
         this.rotation += this.turnSpeed * this.pedal
       }
+      else{ // if you want to auto return to straith
+        this.rotation = lerp(this.rotation, 0, 0.03)
+      }
     }
 
     // get final movement vector
@@ -75,11 +78,16 @@ export default class Car extends PhysicsObjects{
 }
  
 export class HumanCar extends Car{
+  sensors:Sensors;
   constructor(polygon:Polygon){
     super(polygon)
     this.controls = new CarHumanControl();
     // create sensor for driving car
     this.children.push(new Sensors( new Polygon([]), 7, 180, 500))
+    // create sensor for driving car
+    this.sensors = new Sensors( new Polygon([]), 7, 180, 500) 
+    this.children.push(this.sensors);
+    this.sensors.highlight(true)
   }
 }
 

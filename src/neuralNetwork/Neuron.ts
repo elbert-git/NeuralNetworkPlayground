@@ -17,6 +17,7 @@ export class Neuron{
   inputConnections:Array<NeuronConnection>;
   bias:number;
   rawInputValue:number|null;
+  error = 0;
   constructor(){
     this.inputConnections = [];
     this.bias = createRandomWeight();
@@ -50,12 +51,24 @@ export class Neuron{
     }
     return data;
   }
-  mutate(mutateFactor:number){
-    this.bias += createRandomWeight(mutateFactor);
-    this.bias = clamp(this.bias);
-    this.inputConnections.forEach((connection)=>{
-      connection.weight += createRandomWeight(mutateFactor);
-      connection.weight = clamp(connection.weight);
+  // mutate(mutateFactor:number){
+  //   this.bias += createRandomWeight(mutateFactor);
+  //   this.bias = clamp(this.bias);
+  //   this.inputConnections.forEach((connection)=>{
+  //     connection.weight += createRandomWeight(mutateFactor);
+  //     connection.weight = clamp(connection.weight);
+  //   })
+  // }
+  distributeError(){
+    // calc total weight
+    let totalWeight = 0
+    this.inputConnections.forEach((con)=>{totalWeight+=con.weight})
+    // distribute Error to neurons
+    this.inputConnections.forEach((con)=>{
+      con.connectingNeuron.error += this.error * (con.weight/totalWeight)
     })
+  }
+  train(){
+
   }
 }

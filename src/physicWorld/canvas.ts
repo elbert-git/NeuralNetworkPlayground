@@ -28,7 +28,7 @@ export default class Canvas{
     // vars
     this.center = new Vector2(0,0)
     this.cameraPosition = new Vector2(0,0);
-    const zoomOut = 2
+    const zoomOut = 3
     this.camearaViewScale = new Vector2(1/zoomOut, 1/zoomOut);
     this.cameraSubject = null
      
@@ -82,9 +82,10 @@ export default class Canvas{
     // restor context
     this.ctx.restore();
 
-    //! temp put camera control here
-    // const car = objects.humanCar
-    // this.cameraPosition = car.position.scale(this.camearaViewScale.x)
+    // const car = objects.car
+    // if(car){
+    //   this.cameraPosition = this..position.scale(this.camearaViewScale.x)
+    // }
   }
    
   #handleCamera(){
