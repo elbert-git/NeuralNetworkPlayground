@@ -1,5 +1,6 @@
 import PhysicsObjects from "./physicsObject"
 import Canvas from "./canvas";
+import Car, { HumanCar } from "./car/car";
 
 export interface physicsObjectList{
   [key: string]: PhysicsObjects

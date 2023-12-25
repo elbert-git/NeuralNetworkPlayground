@@ -1,4 +1,4 @@
-import NeuralNetwork from "../../neuralNetwork/neuralNetwork";
+import NeuralNetwork from "../../neuralNetwork/neuralNetwork"
 
 interface SignalOut{
   up:number,
@@ -73,12 +73,13 @@ export class AICarControl extends CarControls{
     super();
     this.neuralNetwork = new NeuralNetwork([7, 8, 4]) ;
   }
-  updateNetwork(signals:Array<number>, print:boolean=false):void {
-    if(print){console.table(signals[3])};
-    const neuralNetworkResults =  this.neuralNetwork.feedFoward(signals);
-    this.signalsOut.up = neuralNetworkResults[0];
-    this.signalsOut.right = neuralNetworkResults[1];
-    this.signalsOut.down = neuralNetworkResults[2];
-    this.signalsOut.left = neuralNetworkResults[3];
-  }
+  // updateNetwork(signals:Array<number>, print:boolean=false):void {
+    // const thresh = 0
+    // if(print){console.table(signals[3])};
+    // const neuralNetworkResults =  this.neuralNetwork.feedForward(signals);
+    // this.signalsOut.up = neuralNetworkResults[0] > thresh ? 1 : 0;
+    // this.signalsOut.right = neuralNetworkResults[1] > thresh ? 1 : 0;
+    // this.signalsOut.down = neuralNetworkResults[2] > thresh ? 1 : 0;
+    // this.signalsOut.left = neuralNetworkResults[3] > thresh ? 1 : 0;
+  // }
 }

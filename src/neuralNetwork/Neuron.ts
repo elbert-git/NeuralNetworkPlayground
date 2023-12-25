@@ -1,74 +1,78 @@
-import { clamp, createRandomWeight } from "../utilities";
-import { NeuronData } from "./dataManagement/neuralNetworkData";
+import { relu, sigmoid } from "./activationFunctions";
 
-export class NeuronConnection{
-  connectingNeuron:Neuron;
-  weight:number;
-  constructor(neuron:Neuron){
-    this.connectingNeuron = neuron;
-    this.weight = createRandomWeight();
+export class Node{
+  value:number
+  constructor(number:number){
+    this.value = number
   }
-  getConnectionOutput(){
-    // todo
+  getOutput(){
+    return this.value
   }
 }
 
-export class Neuron{
-  inputConnections:Array<NeuronConnection>;
-  bias:number;
-  rawInputValue:number|null;
-  error = 0;
-  constructor(){
-    this.inputConnections = [];
-    this.bias = createRandomWeight();
-    this.rawInputValue = null;
-  }
-  connectToLayer(neurons:Array<Neuron>){
-    neurons.forEach((n)=>{
-      this.inputConnections.push(new NeuronConnection(n))
+interface Connection{
+  node:Node,
+  weight:number
+}
+
+
+export class Neuron extends Node{
+  connections:Array<Connection>
+  bias = (Math.random()*2)-1;
+  error=0;
+  learningRate = 0.001
+  // activationFunction = (num:number)=>{return num}
+  activationFunction = sigmoid
+  constructor(nodesToConnect:Array<Node>){
+    // call parent's constructor
+    super(0)
+    // create connections
+    this.connections = nodesToConnect.map((node)=>{
+      const connection:Connection = {
+        node:node,
+        weight: (Math.random()*2)-1
+      }
+      return connection
     })
   }
-  #getSum():number{
-    let total = 0;
-    this.inputConnections.forEach((connection)=>{
-      total += connection.connectingNeuron.getOutput() * connection.weight
+  getOutput(){
+    // for every connection
+    let sum = 0
+    // multilply output by weight
+    this.connections.forEach((con)=>{
+      sum += con.weight * con.node.getOutput();
     })
-    return total
+    sum+= this.bias
+    this.value = sum;
+    return this.activationFunction(this.value);
   }
-  getOutput():number{
-    if(this.rawInputValue === null){
-      return (this.#getSum() > this.bias) ? 1 : 0
-    }else{
-      return this.rawInputValue;
-    }
-  }
-  convertToJson():NeuronData{
-    const data:NeuronData = {
-      bias: this.bias,
-      connectionWeights: this.inputConnections.map((connection)=>{
-        return connection.weight
-      })
-    }
-    return data;
-  }
-  // mutate(mutateFactor:number){
-  //   this.bias += createRandomWeight(mutateFactor);
-  //   this.bias = clamp(this.bias);
-  //   this.inputConnections.forEach((connection)=>{
-  //     connection.weight += createRandomWeight(mutateFactor);
-  //     connection.weight = clamp(connection.weight);
-  //   })
-  // }
   distributeError(){
-    // calc total weight
+    // get total weight
     let totalWeight = 0
-    this.inputConnections.forEach((con)=>{totalWeight+=con.weight})
-    // distribute Error to neurons
-    this.inputConnections.forEach((con)=>{
-      con.connectingNeuron.error += this.error * (con.weight/totalWeight)
+    this.connections.forEach((con)=>{totalWeight+=con.weight})
+    // reset every incoming neuron error
+    this.connections.forEach((con)=>{
+      const node = con.node as Neuron
+      if(node instanceof Neuron){node.error = 0}
     })
+    // for ever connection
+    for (let index = 0; index < this.connections.length; index++) {
+      const connection = this.connections[index]
+      const neuron = connection.node;const weight = connection.weight
+      //only work on neurons and not input nodes
+      if((neuron instanceof Neuron)){
+        // distribute the error based on weight contribution
+        neuron.error += this.error*(weight/totalWeight);
+        // then ask it to dstribute again
+        neuron.distributeError();
+      }
+    }
   }
   train(){
-
+    this.connections.forEach((con)=>{
+      const input = con.node.getOutput();
+      con.weight += this.error * input * this.learningRate;
+      this.bias += this.error * this.learningRate;
+    })
   }
 }

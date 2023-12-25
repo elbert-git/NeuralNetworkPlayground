@@ -19,7 +19,6 @@ export class TrafficSpawner{
   update(){
     const posY = this.car!.position.y
     if(posY < this.newThreshold){
-      console.log('passed', posY)
       this.prevThreshold-= this.threshold
       this.newThreshold = this.prevThreshold - this.threshold
       // spawn new traffic row

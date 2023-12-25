@@ -6,7 +6,7 @@ import PhysicsObjects from "../physicsObject";
 class SensorRay extends PhysicsObjects{
   reading:number;
   distance:number
-  visible:boolean = false;
+  visible:boolean = true;
   constructor(polygon:Polygon, distance:number){
     super(polygon)
     this.reading = 0
@@ -14,7 +14,7 @@ class SensorRay extends PhysicsObjects{
   }
 
   update(): void {
-    // this.reading = 0
+    this.reading = 1
   }
 
   // get readings
