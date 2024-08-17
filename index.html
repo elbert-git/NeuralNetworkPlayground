@@ -9,46 +9,43 @@
   <body>
     <div id="road"></div>
     <div class="ui-container red">
+      <!-- title -->
       <h1>Machine Learning Self Driving Car</h1>
-      <p>Short Project Description</p>
+      <p>An exercise for myself to understand neural networks. It's a simulation of a self driving car. Greatly built upon the tutorials by radu and coding train on the subject</p>
       <hr/>
-      <!-- data show -->
-      <div class="data-line">
-        <div>Rows of traffic passed:</div>
-        <div id="distanceLabel">0</div>
+      <!-- train your own data -->
+      <h2>Train car from your inputs</h2>
+      <p>You can steer the car and collect data to train on.</p>
+      <div class="rangeContainer">
+        <input type="range" name="" id="dataRange">
+        <p>hello</p>
       </div>
-      <div class="data-line">
-        <div>Generation:</div>
-        <div id="generationLabel">0</div>
-      </div>
-      <hr/>
-      <!-- generation control -->
-        <div class="slidecontainer">
-          <div>Mutation Factor: <span id="mutationFactorLabel">0.5</span></div>
-          <input type="range" min="0.001" max="0.5" value="0.5" class="slider" step="0.01" id="mutationRange">
-        </input>
-        <div class="slidecontainer">
-          <div>Number of cars per generation: <span id="numberOfCarsPerGenerationLabel">50</span></div>
-          <input type="range" min="1" max="1000" value="50" class="slider" id="carsPerGenerationRange">
-        </div>
-      <hr/>
-      <!-- buttons -->
-      <div class="main-buttons">
-        <button id="startButton">Start Generation</button>
-        <button id="mutateButton" disabled="true">Mutate Network</button>
-      </div>
-      <div class="main-buttons">
-        <button id="saveButton">Save</button>
-        <button id="loadButton">Load</button>
-        <button id="clearButton">Clear Data</button>
+      <div class="buttonContainer">
+        <button id="startData">Start Data collection</button>
+        <button id="stopData">Stop</button>
       </div>
       <hr/>
-      <!-- project explanation -->
-      <div>
-        <p>how this project came about and what i learnt</p>
-        <p>put video embed here</p>
+      <!-- Train the neural network -->
+      <h2>Train Neural network</h2>
+      <div class="rangeContainer">
+        <input type="range" name="" id="trainingRange">
+        <p>hello</p>
       </div>
-    </div>
+      <p>Train the neural network based on your inputs</p>
+      <div class="buttonContainer">
+        <button id="startNN">Start Training</button>
+        <button id="spawnNN">Spawn Trained Car</button>
+      </div>
+      <hr/>
+      <!-- default agent -->
+      <h2>Start default neural network</h2>
+      <p>Use the default neural network I trained</p>
+      <button id="spawnDefault">Start</button>
+      <hr/>
+      <!-- more about this project -->
+      <h2>More about this project</h2>
+      <p>Learning</p>
+    </input>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

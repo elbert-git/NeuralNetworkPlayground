@@ -1,3 +1,3 @@
 export default {
-  base: "https://elbert-git.github.io/RaduNNSelfDrivingCar/",
+  base: "https://elbert-git.github.io/NeuralNetworkPlayground/",
 }

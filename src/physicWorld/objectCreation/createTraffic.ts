@@ -42,7 +42,6 @@ export function createRowOFTraffic(laneCount:number, allLanesWidth:number, yHeig
     trafficRow.children.splice((Math.floor(Math.random()*(laneCount-1))), 1)
   }
 
-
   // return all cars
   return trafficRow
 }

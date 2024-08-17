@@ -1,95 +1,54 @@
-import Experience from "./experience";
-import PhysicsWorld from "./physicWorld/physicsWorld";
-import UI from "./UI";
+import { HumanCar } from "./physicWorld/car/car";
 
-interface ObservedState{
-  generation:number;
-  lanesPassed:number;
+export interface logEntry{
+  readings:Array<number>,
+  inputs:Array<number>
 }
-
 
 let instance:Observer|null = null;
 
+// convert buttons to direcion
+function convertToDirection(inputs:Array<number>){
+  let final = [0, 1, 0];
+  if(inputs[0] === 1){final = [1, 0, 0]}
+  if(inputs[1] === 1){final = [0, 0, 1]}
+  return final
+}
+
+
 export default class Observer{
-  currentState:ObservedState = {
-    generation: 0,
-    lanesPassed: 0
+  car:HumanCar|null = null;
+  logs:Array<logEntry> = [];
+  constructor(car:HumanCar){
+    if(instance){return instance}
+    instance = this;
+    this.car = car 
   }
+  update(){
+    const car = this.car as HumanCar
+    const controls = car.controls.signalsOut
+    // convert inputs to what is should do
 
-  constructor(){
-    // singleton
-    if(instance){return instance}; instance = this;
-  }
+    const inputs = [controls.left, controls.right]
+    const convertedInputs = convertToDirection(inputs)
 
-  getBestCar(){
-    // get list of all ai cars
-    const world:PhysicsWorld = new Experience().processes[0];
-    const allAICars = world.objects['aiCarGroup'].children;
-    // get list of traffic cars (one car per row);
-    const trafficHeights = world.objects['trafficCarGroup'].children.map((row)=>{return row.children[0].position.y})
-
-    // sort the cars into lanes passed
-    const sortedCars = this.#sortCarsIntoLanesPassed(allAICars, trafficHeights);
-
-    //find best car in furthes lane
-    let bestCar:any = allAICars[0];
-    let furthestDistance = 0; furthestDistance
-    sortedCars[sortedCars.length-1].forEach((car:any)=>{
-      if(car.position.y < bestCar.position.y){ // found better car
-        furthestDistance = car.position.y;
-        bestCar = car;
-      }
-    })
-
-    // dehighlihgt all car 
-    allAICars.forEach((car)=>{
-      const aiCar:any = car
-      aiCar.highlight(false)
-    })
-    // highlight best car. 
-    bestCar.highlight(true);
-
-    // return the car
-    return bestCar;
-  }
-
-
-
-  #sortCarsIntoLanesPassed(cars:Array<any>, lanes:Array<number>){
-    // create empty final sorted array
-    const finalSortedArray:any = [];
-    for (let index = 0; index < lanes.length+1; index++) {
-      finalSortedArray.push([]);
-    }
-
-    //add zero tier to lanes
-    const lanesAddedZeroTier = [0, ...lanes]
-
-    // put cars in correct tier
-    lanesAddedZeroTier.forEach((heightTier, index)=>{
-      // for each car
-      cars.forEach((car)=>{
-        // if car is above the tier: add to the sorted array with index
-        if(car.position.y < heightTier){
-          finalSortedArray[index].push(car);
-        }
+    // filter out so it's not so many straight lines
+    // if(convertedInputs[1] === 1){
+    //   if(Math.random() < 0.3){ // only let 30 percent of straight direction data in
+    //     this.logs.push({
+    //       readings: car.sensors.getReadings(),
+    //       inputs: convertedInputs
+    //     })
+    //   }
+    // }
+    // else{
+      this.logs.push({
+        readings: car.sensors.getReadings(),
+        inputs: convertedInputs
       })
-    })
-
-    // trim empty top tiers
-    const trimmedFinalSortedArray:any = []
-    for (let index = 0; index < finalSortedArray.length; index++) {
-      const currentElement = finalSortedArray[index]
-      if(currentElement.length > 0){trimmedFinalSortedArray.push(currentElement)}
-    }
-
-    return trimmedFinalSortedArray
+    // }
   }
-
-  updateGeneration(num:number){
-    // update this instance
-    this.currentState.generation = num;
-    // update ui
-    new UI().updateGenerationsText(num)
+  reset(){
+    this.logs = []
   }
 }

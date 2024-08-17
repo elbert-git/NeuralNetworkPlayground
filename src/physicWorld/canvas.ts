@@ -17,6 +17,7 @@ export default class Canvas {
     camearaViewScale: Vector2;
     cameraSubject: PhysicsObjects | null
 
+<<<<<<< HEAD
     constructor(parentElement: HTMLElement) {
         //create canvas
         this.parentElement = parentElement;
@@ -57,6 +58,33 @@ export default class Canvas {
         this.ctx.beginPath();
         this.ctx.rect(0, 0, this.size.x, this.size.y)
         this.ctx.fill()
+=======
+  constructor(parentElement:HTMLElement){
+    //create canvas
+    this.parentElement = parentElement;
+    this.elCanvas = document.createElement('canvas');
+    this.elCanvas.classList.add('debugRedLine', 'roadCanvas');
+    this.ctx = this.elCanvas.getContext('2d')!;
+    this.parentElement.appendChild(this.elCanvas);
+     
+    // vars
+    this.center = new Vector2(0,0)
+    this.cameraPosition = new Vector2(0,0);
+    const zoomOut = 3
+    this.camearaViewScale = new Vector2(1/zoomOut, 1/zoomOut);
+    this.cameraSubject = null
+     
+    // on resize
+    this.size = {x: 0, y: 0}
+    window.addEventListener('resize', this.onResize.bind(this))
+    this.onResize();
+  }
+   
+  onResize(){
+    this.size = {
+      x: this.parentElement.clientWidth,
+      y: this.parentElement.clientHeight
+>>>>>>> 6539c3bf301d463aa4989fab86d814dc4064ef5a
     }
 
     draw(objects: physicsObjectList) {
@@ -87,11 +115,25 @@ export default class Canvas {
         // this.cameraPosition = car.position.scale(this.camearaViewScale.x)
     }
 
+<<<<<<< HEAD
     #handleCamera() {
         if (this.cameraSubject) {
             const newPosition = this.cameraSubject.position.scale(this.camearaViewScale.x);
             newPosition.x = 0
             this.cameraPosition = newPosition
         }
+=======
+    // const car = objects.car
+    // if(car){
+    //   this.cameraPosition = this..position.scale(this.camearaViewScale.x)
+    // }
+  }
+   
+  #handleCamera(){
+    if(this.cameraSubject){
+      const newPosition = this.cameraSubject.position.scale(this.camearaViewScale.x);
+      newPosition.x = 0
+      this.cameraPosition = newPosition
+>>>>>>> 6539c3bf301d463aa4989fab86d814dc4064ef5a
     }
 }

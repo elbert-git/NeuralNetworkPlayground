@@ -45,16 +45,11 @@ export function createTrafficCar(){
 }
 
 export function createAICar(network:NeuralNetwork|null=null):any{
-  const car:any = new AICar(carPolygon)
+  const car:any = new AICar(carPolygon, network!)
   // handle physics
   car.physicsData.enabled = true;
   car.physicsData.collidesWith = ['road', 'traffic']
   // handle style
   car.style = createCarStyle('carFillBlue');
-  // create with mutated nerual network
-  if(network){
-    car.controls.neuralNetwork = network.clone();
-    car.controls.neuralNetwork.mutate(new UI().mutatingFactor)
-  }
   return car
 }
